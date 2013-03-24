@@ -3,12 +3,12 @@
 void Init(int scale);
 int main(int argc, char** argv)
 {
-	//sage
 	Chip8 emu;
+
+	Init(emu.scale);
 	emu.Init();
 	emu.Load("/home/luka/Desktop/chip8roms/MAZE");
 
-	Init(emu.scale);
 	SDL_Event event;
 	bool is_running = true;
 
@@ -24,13 +24,7 @@ int main(int argc, char** argv)
 				default:;
 			}
 		}
-		//glClear(GL_COLOR_BUFFER_BIT);
-		//glLoadIdentity();
-
 		emu.Cycle();
-
-		SDL_GL_SwapBuffers();
-		SDL_Delay(16);
 	}
 
 	SDL_Quit();

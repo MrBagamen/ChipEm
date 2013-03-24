@@ -19,6 +19,14 @@ void Chip8::Init()
 	// initialize timers
 	delay_timer = 0;
 	sound_timer = 0;
+
+	srand(static_cast<unsigned int>(time(nullptr)));
+
+	//Pixel
+	pixel[0] = 0;pixel[1] = 0;
+	pixel[2] = scale;pixel[3] = 0;
+	pixel[4] = scale;pixel[5] = scale;
+	pixel[6] = 0;pixel[7] = scale;
 }
 
 void Chip8::Load(const char* fileName)
@@ -78,11 +86,11 @@ void Chip8::Cycle()
 	            {
 	                if (px & ((0x80) >> xx))
 	                {
-	                    unsigned short pos = x + xx + ((y + yy) * 65);
+	                    unsigned short pos = x + xx + ((y + yy) * 64);
 
 	                    if (pos < (64*32))
 	                    {
-	                        if (vram[pos])
+	                        if(vram[pos])
 	                        {
 	                            V[0xF] = 1;
 	                        }
@@ -93,9 +101,10 @@ void Chip8::Cycle()
 	        }
 			drawFlag = true;
 			pc += 2;
+			break;
 		}
 		case 0x3000: // 3XNN : Skips the next instruction if VX equals NN.
-			if(V[(opcode & 0x0F00)] == (opcode & 0x00FF))
+			if(V[(opcode & 0x0F00) >> 8] == (opcode & 0x00FF))
 			{
 				pc += 4;
 			}
@@ -105,7 +114,7 @@ void Chip8::Cycle()
 			}
 		break;
 		case 0xC000: // CXNN: Sets VX to a random number and NN
-			V[(opcode & 0x0F00)] = rand() % 255 & (opcode & 0x00FF);
+			V[(opcode & 0x0F00) >> 8] = rand() % 255 & (opcode & 0x00FF);
 			pc += 2;
 		break;
 		case 0xA000: // ANNN: Sets I to the address NNN
@@ -114,6 +123,14 @@ void Chip8::Cycle()
 		break;
 		case 0x1000: // 1NNN: Jumps to address NNN
 			pc = (opcode & 0x0FFF);
+		break;
+		case 0x7000: // 7XNN: Adds NN to VX
+			V[(opcode & 0x0F00) >> 8] += opcode & 0x00FF;
+			pc += 2;
+		break;
+		case 0x6000: // 6XNN: Sets VX to NN
+			V[(opcode & 0x0F00) >> 8] = opcode & 0x00FF;
+			pc += 2;
 		break;
 		default:
 			printf("Unknocn opcode: 0x%X\n", opcode);
@@ -135,11 +152,18 @@ void Chip8::Draw()
 {
 	if(drawFlag)
 	{
+		glClear(GL_COLOR_BUFFER_BIT);
+		glLoadIdentity();
+
 		for(int i = 0, x = 0, y = 0; i < (64*32); i++)
 		{
 			if(vram[i])
 			{
-				glRectd(x * scale, y * scale, (y * scale) + scale, (y*scale) + scale);
+				glPushMatrix();
+				glTranslatef(x*scale, y*scale, 0.0f);
+				glVertexPointer(2, GL_INT, 0, pixel);
+				glDrawArrays(GL_QUADS, 0, 4);
+				glPopMatrix();
 			}
 			++x;
 			if(x && (x % 64 == 0))
@@ -148,5 +172,7 @@ void Chip8::Draw()
 				++y;
 			}
 		}
+
+		SDL_GL_SwapBuffers();
 	}
 }

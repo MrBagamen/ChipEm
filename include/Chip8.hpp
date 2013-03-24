@@ -3,11 +3,12 @@
 
 #include <SDL/SDL.h>
 #include <GL/gl.h>
+#include <ctime>
 
 class Chip8
 {
 public:
-	int scale = 8;
+	int scale = 16;
 
 	void Init();
 	void Load(const char* fileName);
@@ -48,6 +49,7 @@ private:
 	  0xF0, 0x80, 0xF0, 0x80, 0x80  // F
 	};
 
+	GLint pixel[8];
 	void Draw();
 };
 
