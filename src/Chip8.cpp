@@ -112,6 +112,9 @@ void Chip8::Cycle()
 			I = opcode & 0x0FFF;
 			pc += 2;
 		break;
+		case 0x1000: // 1NNN: Jumps to address NNN
+			pc = (opcode & 0x0FFF);
+		break;
 		default:
 			printf("Unknocn opcode: 0x%X\n", opcode);
 	}
