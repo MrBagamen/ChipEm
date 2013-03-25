@@ -7,7 +7,7 @@ int main(int argc, char** argv)
 
 	Init(emu.scale);
 	emu.Init();
-	emu.Load("/home/luka/Desktop/chip8roms/MAZE");
+	emu.Load("/home/luka/Desktop/chip8roms/PUZZLE");
 
 	SDL_Event event;
 	bool is_running = true;
@@ -20,6 +20,114 @@ int main(int argc, char** argv)
 			{
 				case SDL_QUIT:
 					is_running = false;
+				break;
+				case SDL_KEYDOWN:
+					switch(event.key.keysym.sym)
+					{
+						case SDLK_w:
+							emu.keys[0x1] = 1;
+						break;
+						case SDLK_2:
+							emu.keys[0x2] = 1;
+						break;
+						case SDLK_0:
+							emu.keys[0x3] = 1;
+						break;
+						case SDLK_UP:
+							emu.keys[0xC] = 1;
+						break;
+						case SDLK_s:
+							emu.keys[0x4] = 1;
+						break;
+						case SDLK_1:
+							emu.keys[0x5] = 1;
+						break;
+						case SDLK_o:
+							emu.keys[0x6] = 1;
+						break;
+						case SDLK_DOWN:
+							emu.keys[0xD] = 1;
+						break;
+						case SDLK_a:
+							emu.keys[0x7] = 1;
+						break;
+						case SDLK_q:
+							emu.keys[0x8] = 1;
+						break;
+						case SDLK_k:
+	                    	emu.keys[0x9] = 1;
+	                    break;
+		                case SDLK_l:
+		                   	emu.keys[0xE] = 1;
+		                break;
+		                case SDLK_z:
+		                    emu.keys[0xA] = 1;
+		                break;
+		                case SDLK_x:
+		                    emu.keys[0x0] = 1;
+		                break;
+		                case SDLK_n:
+		                    emu.keys[0xB] = 1;
+		                break;
+		                case SDLK_m:
+		                    emu.keys[0xF] = 1;
+		                break;
+		                default:;
+					}
+				break;
+				case SDL_KEYUP:
+					switch(event.key.keysym.sym)
+					{
+						case SDLK_w:
+							emu.keys[0x1] = 0;
+						break;
+						case SDLK_2:
+							emu.keys[0x2] = 0;
+						break;
+						case SDLK_0:
+							emu.keys[0x3] = 0;
+						break;
+						case SDLK_UP:
+							emu.keys[0xC] = 0;
+						break;
+						case SDLK_s:
+							emu.keys[0x4] = 0;
+						break;
+						case SDLK_1:
+							emu.keys[0x5] = 0;
+						break;
+						case SDLK_o:
+							emu.keys[0x6] = 0;
+						break;
+						case SDLK_DOWN:
+							emu.keys[0xD] = 0;
+						break;
+						case SDLK_a:
+							emu.keys[0x7] = 0;
+						break;
+						case SDLK_q:
+							emu.keys[0x8] = 0;
+						break;
+						case SDLK_k:
+	                    	emu.keys[0x9] = 0;
+	                    break;
+		                case SDLK_l:
+		                   	emu.keys[0xE] = 0;
+		                break;
+		                case SDLK_z:
+		                    emu.keys[0xA] = 0;
+		                break;
+		                case SDLK_x:
+		                    emu.keys[0x0] = 0;
+		                break;
+		                case SDLK_n:
+		                    emu.keys[0xB] = 0;
+		                break;
+		                case SDLK_m:
+		                    emu.keys[0xF] = 0;
+		                break;
+		                default:;
+					}
 				break;
 				default:;
 			}

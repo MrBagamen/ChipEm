@@ -9,6 +9,7 @@ class Chip8
 {
 public:
 	int scale = 16;
+	unsigned char keys[16];			// storing key states
 
 	void Init();
 	void Load(const char* fileName);
@@ -26,7 +27,6 @@ private:
 	unsigned char sound_timer;
 	unsigned short stack[16];		// stack
 	unsigned short sp;				// stack pointer
-	unsigned char keys[16];			// storing key states
 
 
 	unsigned char fontset[80] =
